@@ -1,0 +1,7 @@
+.vs/
+appsettings.json
+WeatherForecast.cs
+appsettings.Development.json
+appsettings.json
+obj/
+Migrations/

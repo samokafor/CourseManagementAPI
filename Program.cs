@@ -1,5 +1,8 @@
+using CourseManagementAPI.Security;
+using CourseManagementAPI.Security.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using SchoolManagementAPI.DTOs;
 using System.Text;
 
 
@@ -10,6 +13,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<IUserAuthentication, UserAuthentication> ();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher> ();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

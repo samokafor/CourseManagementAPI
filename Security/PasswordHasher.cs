@@ -1,32 +1,47 @@
-﻿
-using CourseManagementAPI.Security.Interfaces;
+﻿using CourseManagementAPI.Security.Interfaces;
+using System;
+using System.Security.Cryptography;
 using System.Text;
 
-namespace CourseManagementAPI.Security
+public class PasswordHasher : IPasswordHasher
 {
-    public class PasswordHasher : IPasswordHasher
+    private static readonly byte[] Salt = new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08 };
+
+    public string EncryptPassword(string password)
     {
-        public static string Key = "!@#$%^23?Hf&e.*{>";
+        if (string.IsNullOrEmpty(password))
+            throw new ArgumentNullException(nameof(password));
 
-        public PasswordHasher()
+        using (var pbkdf2 = new Rfc2898DeriveBytes(password, Salt, 10000))
         {
+            byte[] hash = pbkdf2.GetBytes(32); // 32 bytes for SHA256
+            return Convert.ToBase64String(hash);
         }
+    }
 
-        public string EncryptPassword(string password)
-        {
-            if (string.IsNullOrEmpty(password)) return "";
-            password += Key;
-            var passwordBytes = Encoding.UTF8.GetBytes(password);
-            return Convert.ToBase64String(passwordBytes);
-        }
+    public bool VerifyPassword(string password, string hashedPassword)
+    {
+        if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(hashedPassword))
+            return false;
 
-        public string DecryptPassword(string base64EncodeData)
+        byte[] hashedPasswordBytes = Convert.FromBase64String(hashedPassword);
+
+        using (var pbkdf2 = new Rfc2898DeriveBytes(password, Salt, 10000))
         {
-            if (string.IsNullOrEmpty(base64EncodeData)) return "";
-            var base64EncodeBytes = Convert.FromBase64String(base64EncodeData);
-            var result = Encoding.UTF8.GetString(base64EncodeBytes);
-            result = result.Substring(0, result.Length - Key.Length);
-            return result;
+            byte[] hash = pbkdf2.GetBytes(32); // 32 bytes for SHA256
+
+            // Compare the hashed password with the calculated hash
+            return SlowEquals(hash, hashedPasswordBytes);
         }
+    }
+
+    public bool SlowEquals(byte[] a, byte[] b)
+    {
+        uint diff = (uint)a.Length ^ (uint)b.Length;
+        for (int i = 0; i < a.Length && i < b.Length; i++)
+        {
+            diff |= (uint)(a[i] ^ b[i]);
+        }
+        return diff == 0;
     }
 }

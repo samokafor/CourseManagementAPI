@@ -1,5 +1,8 @@
-﻿using CourseManagementAPI.Database.Models;
+﻿using AutoMapper;
+using CourseManagementAPI.Database;
+using CourseManagementAPI.Database.Models;
 using CourseManagementAPI.DTOs;
+using CourseManagementAPI.Repositories.Interfaces;
 using CourseManagementAPI.Security.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,13 +16,15 @@ namespace CourseManagementAPI.Security
 
         private readonly IConfiguration _config;
         private readonly IPasswordHasher _passwordHasher;
+        private readonly IUserRepository _userRepository;
 
-        public UserAuthentication(IConfiguration config, IPasswordHasher passwordHasher)
+        public UserAuthentication(IConfiguration config, IPasswordHasher passwordHasher, IUserRepository userRepository)
         {
             _config = config;
             _passwordHasher = passwordHasher;
+            _userRepository = userRepository;
         }
-        public string GenerateToken(User user)
+        public string GenerateToken(UserDto user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -44,14 +49,19 @@ namespace CourseManagementAPI.Security
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public User Authenticate(UserLoginDto userLogin)
+        public UserDto Authenticate(UserLoginDto userLogin)
         {
-            var currentUser = DummyUsers.Users.FirstOrDefault(u => u.Email.ToLower() == userLogin.Email && _passwordHasher.DecryptPassword(u.Password) == userLogin.Password);
-            if (currentUser == null)
+            var currentUser = _userRepository.GetUserByEmail(userLogin.Email);
+            
+            if (currentUser != null)
             {
-                return null;
+                if (!_passwordHasher.VerifyPassword(userLogin.Password, currentUser.Password))
+                {
+                    return null;
+                }
             }
 
+            
             return currentUser;
         }
 

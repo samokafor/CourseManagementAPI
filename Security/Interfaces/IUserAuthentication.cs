@@ -7,5 +7,9 @@ namespace CourseManagementAPI.Security.Interfaces
     {
         string GenerateToken(UserDto user);
         UserDto Authenticate(UserLoginDto userLogin);
+
+        bool IsValidPassword(string password);
+
+        string PasswordRequiremnts();
     }
 }

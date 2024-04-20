@@ -5,6 +5,7 @@ using CourseManagementAPI.DTOs;
 using CourseManagementAPI.Repositories.Interfaces;
 using CourseManagementAPI.Security.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace CourseManagementAPI.Repositories
 {
@@ -22,14 +23,16 @@ namespace CourseManagementAPI.Repositories
         public async Task<UserDto> AddUserAsync(UserDto userDto)
         {
             if (userDto == null) return null;
+            TextInfo convert = CultureInfo.CurrentCulture.TextInfo;
+            
 
             var newUser = new User()
             {
-                FirstName = userDto.FirstName,
-                LastName = userDto.LastName,
-                Email = userDto.Email,
-                Username = userDto.Username,
-                Role = userDto.Role,
+                FirstName = convert.ToTitleCase(userDto.FirstName.ToLower()),
+                LastName = convert.ToTitleCase(userDto.LastName.ToLower()),
+                Email = userDto.Email.ToLower(),
+                Username = userDto.Username.ToLower(),
+                Role = convert.ToTitleCase(userDto.Role.ToLower()),
                 Password = _passwordHasher.EncryptPassword(userDto.Password)
             };
             var newUserLogin = new UserLogin()
@@ -37,12 +40,14 @@ namespace CourseManagementAPI.Repositories
                 Email = newUser.Email,
                 Password = newUser.Password
             };
-            var newUserDto = _mapper.Map<UserDto>(newUser);
-
+            
             await _context.Users.AddAsync(newUser);
             await _context.UserLogins.AddAsync(newUserLogin);
             await _context.SaveChangesAsync();
-            return newUserDto;
+            var addedUser = GetUserByEmail(userDto.Email);
+            var addedUserDto = _mapper.Map<UserDto>(addedUser);
+
+            return addedUserDto;
         }
 
         public UserDto GetUserByEmail(string email)

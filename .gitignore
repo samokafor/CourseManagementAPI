@@ -7,3 +7,5 @@ obj/
 Migrations/
 bin/
 DummyUsers.cs
+Controllers/LoginController.cs
+Controllers/UserController.cs

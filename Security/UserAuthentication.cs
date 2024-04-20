@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace CourseManagementAPI.Security
 {
@@ -65,6 +66,32 @@ namespace CourseManagementAPI.Security
             return currentUser;
         }
 
-        
+        public bool IsValidPassword(string password)
+        {
+            string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}$";
+
+            return Regex.IsMatch(password, pattern);
+        }
+
+        public string PasswordRequiremnts()
+        {
+            var requirementsString = "";
+
+            List<string> requirements = new List<string>
+                {
+                    "Length greater than or equal to 8",
+                    "Includes uppercase letters",
+                    "Includes lowercase letters",
+                    "Includes numbers",
+                    "Includes special characters"
+                };
+
+            foreach( var requirement in requirements)
+            {
+                requirementsString += requirement +" ";
+            }
+
+            return requirementsString;
+        }
     }
 }

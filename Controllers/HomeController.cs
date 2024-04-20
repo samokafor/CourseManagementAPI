@@ -55,6 +55,11 @@ namespace CourseManagementAPI.Controllers
                     ModelState.AddModelError("Email", $"User with email - {userDto.Email} already exists!");
                     return BadRequest(ModelState);
                 }
+                if (!_userAuth.IsValidPassword(userDto.Password))
+                {
+                    ModelState.AddModelError("Password", $"Password does not meet reqirements; {_userAuth.PasswordRequiremnts()}");
+                    return BadRequest(ModelState);
+                }
 
                 var newUser = await _userRepository.AddUserAsync(userDto);
                 return CreatedAtAction(nameof(GetUserById), new { Id = newUser.Id }, newUser);
@@ -64,6 +69,8 @@ namespace CourseManagementAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Oops! an error occured! {ex.Message}");
             }
         }
+
+        [Authorize(Roles = "Administrator")]
         [HttpGet("{Id:int}")]
         public async Task<ActionResult<UserDto>> GetUserById(int Id)
         {
@@ -72,7 +79,7 @@ namespace CourseManagementAPI.Controllers
                 var user = await _userRepository.GetUserById(Id);
                 if (user == null)
                 {
-                    return BadRequest("User not found");
+                    return BadRequest($"User with ID - {Id} does not exist!");
                 }
                 return Ok(user);
             }

@@ -30,6 +30,7 @@ namespace CourseManagementAPI.Repositories
             {
                 FirstName = convert.ToTitleCase(userDto.FirstName.ToLower()),
                 LastName = convert.ToTitleCase(userDto.LastName.ToLower()),
+                Gender = convert.ToTitleCase(userDto.Gender.ToLower()),
                 Email = userDto.Email.ToLower(),
                 Username = userDto.Username.ToLower(),
                 Role = convert.ToTitleCase(userDto.Role.ToLower()),

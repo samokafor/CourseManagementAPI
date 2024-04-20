@@ -12,6 +12,8 @@ namespace SchoolManagementAPI.DTOs
         {
             CreateMap<User, UserDto>();
             CreateMap<UserLogin, UserLoginDto>();
+            CreateMap<Course, CourseDto>();
+            CreateMap<Instructor, InstructorDto>();
             
         }
     }

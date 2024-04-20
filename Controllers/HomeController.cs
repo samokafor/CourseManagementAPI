@@ -1,9 +1,8 @@
-﻿using CourseManagementAPI.Controllers;
+﻿
 using CourseManagementAPI.DTOs;
 using CourseManagementAPI.Repositories.Interfaces;
 using CourseManagementAPI.Security.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseManagementAPI.Controllers

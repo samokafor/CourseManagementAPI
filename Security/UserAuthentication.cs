@@ -32,11 +32,15 @@ namespace CourseManagementAPI.Security
 
             var claims = new[]
             {
+                new Claim("Id", user.Id.ToString()),
                 new Claim("FirstName", user.FirstName),
                 new Claim("LastName", user.LastName),
+                new Claim(ClaimTypes.Gender, user.Gender),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim("Username", user.Username),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.Role, user.Role),
+                new Claim("DateCreated", user.DateCreated.ToString()),
+                new Claim("DateModified", user?.DateModified.ToString())
             };
 
             var token = new JwtSecurityToken(

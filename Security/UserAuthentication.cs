@@ -14,10 +14,10 @@ namespace CourseManagementAPI.Security
     {
 
         private readonly IConfiguration _config;
-        private readonly IPasswordHasher _passwordHasher;
+        private readonly IHasher _passwordHasher;
         private readonly IUserRepository _userRepository;
 
-        public UserAuthentication(IConfiguration config, IPasswordHasher passwordHasher, IUserRepository userRepository)
+        public UserAuthentication(IConfiguration config, IHasher passwordHasher, IUserRepository userRepository)
         {
             _config = config;
             _passwordHasher = passwordHasher;
@@ -53,18 +53,18 @@ namespace CourseManagementAPI.Security
 
         public User Authenticate(UserLoginDto userLogin)
         {
-            var currentUser = _userRepository.GetUserByEmail(userLogin.Email);
+            var currentUserLogin = _userRepository.GetUserLogin(userLogin.Email);
             
-            if (currentUser != null)
+            if (currentUserLogin != null)
             {
-                if (!_passwordHasher.VerifyPassword(userLogin.Password, currentUser.Password))
+                if (!_passwordHasher.VerifyPassword(userLogin.Password, currentUserLogin.Password))
                 {
                     return null;
                 }
             }
 
             
-            return currentUser;
+            return _userRepository.GetUserByEmail(currentUserLogin.Email);
         }
 
         public bool IsValidPassword(string password)
@@ -76,23 +76,8 @@ namespace CourseManagementAPI.Security
 
         public string PasswordRequiremnts()
         {
-            var requirementsString = "";
-
-            List<string> requirements = new List<string>
-                {
-                    "Length greater than or equal to 8",
-                    "Includes uppercase letters",
-                    "Includes lowercase letters",
-                    "Includes numbers",
-                    "Includes special characters"
-                };
-
-            foreach( var requirement in requirements)
-            {
-                requirementsString += requirement +" ";
-            }
-
-            return requirementsString;
+            string requirements = @"Length greater than or equal to 8, Includes uppercase letters, Includes lowercase letters, Includes numbers, Includes special characters";
+            return requirements;
         }
     }
 }

@@ -38,7 +38,7 @@ namespace CourseManagementAPI.Controllers
         }
         [Authorize(Roles = "Administrator")]
         [HttpGet("Users")]
-        public async Task<ActionResult<IEnumerable<Instructor>>> GetAllUsersAsync()
+        public async Task<ActionResult<IEnumerable<User>>> GetAllUsersAsync()
         {
             try
             {
@@ -56,7 +56,7 @@ namespace CourseManagementAPI.Controllers
         }
         [Authorize(Roles = "Administrator")]
         [HttpGet("Search/{searchTerm}")]
-        public async Task<ActionResult<IEnumerable<Instructor>>> SearchUsersAsync(string searchTerm)
+        public async Task<ActionResult<IEnumerable<User>>> SearchUsersAsync(string searchTerm)
         {
             try
             {
@@ -77,7 +77,7 @@ namespace CourseManagementAPI.Controllers
 
         [Authorize(Roles = "Administrator")]
         [HttpPut("UpdateRole/{Id:int}")]
-        public async Task<ActionResult<Instructor>> EditUserRoleAsync(int Id, UpdateUserRoleDto roleDto)
+        public async Task<ActionResult<User>> EditUserRoleAsync(int Id, UpdateUserRoleDto roleDto)
         {
             try
             {
@@ -88,8 +88,8 @@ namespace CourseManagementAPI.Controllers
                     return StatusCode(StatusCodes.Status302Found, $"user with ID - {Id} does not exist");
                 }
                 await _userRepository.UpdateUserRole(Id, roleDto);
-                var updatedinstructor = await _userRepository.GetUserById(Id);
-                return Ok(updatedinstructor);
+                var updatedUser = await _userRepository.GetUserById(Id);
+                return Ok(updatedUser);
             }
             catch (Exception ex)
             {

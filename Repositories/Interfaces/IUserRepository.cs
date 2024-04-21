@@ -7,6 +7,7 @@ namespace CourseManagementAPI.Repositories.Interfaces
     {
         Task<User> AddUserAsync(UserDto userDto);
         public User GetUserByEmail(string email);
+        public UserLogin GetUserLogin(string email);
         Task<User> GetUserByUserName(string userName);
         Task<IEnumerable<User>> GetAllUsers();
         Task<IEnumerable<User>> SearchUsers(string searchTerm);

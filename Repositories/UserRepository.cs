@@ -12,13 +12,13 @@ namespace CourseManagementAPI.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly CourseDbContext _context;
-        private readonly IPasswordHasher _passwordHasher;
+        private readonly IHasher _passwordHasher;
         private TextInfo convert = CultureInfo.CurrentCulture.TextInfo;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public UserRepository(
             CourseDbContext context, 
-            IPasswordHasher passwordHasher,
+            IHasher passwordHasher,
             IHttpContextAccessor httpContextAccessor
             ) 
         {
@@ -29,7 +29,10 @@ namespace CourseManagementAPI.Repositories
         public async Task<User> AddUserAsync(UserDto userDto)
         {
             if (userDto == null) return null;
-            
+            if(userDto.Password != userDto.ConfirmPassword)
+            {
+                throw new Exception("Passwords do not match");
+            }
 
             var newUser = new User()
             {
@@ -39,12 +42,12 @@ namespace CourseManagementAPI.Repositories
                 Email = userDto.Email.ToLower(),
                 Username = userDto.Username.ToLower(),
                 Role = convert.ToTitleCase(userDto.Role.ToLower()),
-                Password = _passwordHasher.EncryptPassword(userDto.Password)
+                
             };
             var newUserLogin = new UserLogin()
             {
                 Email = newUser.Email,
-                Password = newUser.Password
+                Password = _passwordHasher.EncryptPassword(userDto.Password)
             };
             
             await _context.Users.AddAsync(newUser);
@@ -58,13 +61,15 @@ namespace CourseManagementAPI.Repositories
         public async Task DeleteUser(int Id)
         {
             var user = await GetUserById(Id);
+            var userLogin = _context.UserLogins.FirstOrDefault(l => l.Email == user.Email);
             _context.Users.Remove(user);
+            _context.UserLogins.Remove(userLogin);
             await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<User>> GetAllUsers()
         {
-            var user = await _context.Users.Include(u => u.UserLogin).ToListAsync();
+            var user = await _context.Users.ToListAsync();
             return user;
         }
 
@@ -78,7 +83,7 @@ namespace CourseManagementAPI.Repositories
         
         public async Task<User> GetUserById(int id)
         {
-            var user =await _context.Users.Include(u => u.UserLogin).FirstOrDefaultAsync(u => u.Id == id);
+            var user =await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
             if (user == null) return null;
             return user;
@@ -86,7 +91,7 @@ namespace CourseManagementAPI.Repositories
 
         public async Task<User> GetUserByUserName(string userName)
         {
-            var user = await _context.Users.Include(u => u.UserLogin).FirstOrDefaultAsync(u => u.Username == userName);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == userName);
 
             if (user == null) return null;
             
@@ -141,6 +146,14 @@ namespace CourseManagementAPI.Repositories
                 };
             }
             return null;
+        }
+
+        public UserLogin GetUserLogin(string email)
+        {
+            var user = _context.UserLogins.FirstOrDefault(u => u.Email == email);
+
+            if (user == null) return null;
+            return user;
         }
     }
 }

@@ -13,6 +13,12 @@ namespace CourseManagementAPI.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.UserLogin)
+                .WithMany()
+                .HasForeignKey(u => u.Email)
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Course>()
                 .HasOne(c => c.Instructor)
                 .WithMany(i => i.Courses)

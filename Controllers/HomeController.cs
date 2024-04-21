@@ -12,12 +12,11 @@ namespace CourseManagementAPI.Controllers
     public class HomeController : ControllerBase
     {
         private readonly IUserAuthentication _userAuth;
-        private readonly IPasswordHasher _passwordHasher;
         private readonly IUserRepository _userRepository;
-        public HomeController(IUserAuthentication userAuth, IPasswordHasher passwordHasher, IUserRepository userRepository)
+        public HomeController(IUserAuthentication userAuth, IUserRepository userRepository)
         {
             _userAuth = userAuth;
-            _passwordHasher = passwordHasher;
+            
             _userRepository = userRepository;
         }
 

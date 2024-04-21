@@ -1,6 +1,5 @@
 ﻿using CourseManagementAPI.Database.Models;
 using CourseManagementAPI.DTOs;
-using CourseManagementAPI.Repositories;
 using CourseManagementAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

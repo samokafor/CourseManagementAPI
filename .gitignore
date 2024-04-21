@@ -1,13 +1,9 @@
 .vs/
 appsettings.json
-WeatherForecast.cs
 appsettings.Development.json
 appsettings.json
 obj/
 Migrations/
 bin/
-DummyUsers.cs
-Controllers/LoginController.cs
 Jottings.cs
 DTOs/UpdatePasswordDto.cs
-DTOs/UpdateUserRoleDto.cs

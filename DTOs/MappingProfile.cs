@@ -10,9 +10,7 @@ namespace SchoolManagementAPI.DTOs
     {
         public MappingProfile()
         {
-            CreateMap<User, UserDto>();
-            CreateMap<User, UpdateUserDto>();
-            CreateMap<User, UpdatePasswordDto>();
+            CreateMap<User, UserDto>()
             CreateMap<User, UpdateUserRoleDto>();
             CreateMap<UserLogin, UserLoginDto>();
             CreateMap<Course, CourseDto>();

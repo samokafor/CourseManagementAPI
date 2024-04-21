@@ -68,7 +68,7 @@ namespace CourseManagementAPI.Controllers
             }
         }
 
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         [HttpGet("User/{Id:int}")]
         public async Task<ActionResult<User>> GetUserById(int Id)
         {

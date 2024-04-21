@@ -12,7 +12,7 @@ namespace CourseManagementAPI.Repositories.Interfaces
         Task<IEnumerable<User>> SearchUsers(string searchTerm);
         Task<User> GetUserById(int id);
         Task<User> UpdateUserRole(int Id, UpdateUserRoleDto roleDto);
-        Task DeleteUser(string userName);
+        Task DeleteUser(int Id);
         User GetCurentUser();
     }
 }

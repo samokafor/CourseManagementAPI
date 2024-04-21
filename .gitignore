@@ -8,4 +8,6 @@ Migrations/
 bin/
 DummyUsers.cs
 Controllers/LoginController.cs
-Controllers/UserController.cs
+Jottings.cs
+DTOs/UpdatePasswordDto.cs
+DTOs/UpdateUserRoleDto.cs

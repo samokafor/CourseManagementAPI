@@ -5,8 +5,8 @@ namespace CourseManagementAPI.Security.Interfaces
 {
     public interface IUserAuthentication
     {
-        string GenerateToken(UserDto user);
-        UserDto Authenticate(UserLoginDto userLogin);
+        string GenerateToken(User user);
+        User Authenticate(UserLoginDto userLogin);
 
         bool IsValidPassword(string password);
 

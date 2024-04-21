@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using CourseManagementAPI.Database;
-using CourseManagementAPI.Database.Models;
+﻿using CourseManagementAPI.Database.Models;
 using CourseManagementAPI.DTOs;
 using CourseManagementAPI.Repositories.Interfaces;
 using CourseManagementAPI.Security.Interfaces;
@@ -25,7 +23,7 @@ namespace CourseManagementAPI.Security
             _passwordHasher = passwordHasher;
             _userRepository = userRepository;
         }
-        public string GenerateToken(UserDto user)
+        public string GenerateToken(User user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -38,9 +36,8 @@ namespace CourseManagementAPI.Security
                 new Claim(ClaimTypes.Gender, user.Gender),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim("Username", user.Username),
-                new Claim(ClaimTypes.Role, user.Role),
-                new Claim("DateCreated", user.DateCreated.ToString()),
-                new Claim("DateModified", user?.DateModified.ToString())
+                new Claim(ClaimTypes.Role, user.Role)
+
             };
 
             var token = new JwtSecurityToken(
@@ -54,7 +51,7 @@ namespace CourseManagementAPI.Security
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public UserDto Authenticate(UserLoginDto userLogin)
+        public User Authenticate(UserLoginDto userLogin)
         {
             var currentUser = _userRepository.GetUserByEmail(userLogin.Email);
             

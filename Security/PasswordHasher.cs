@@ -14,7 +14,7 @@ public class PasswordHasher : IPasswordHasher
 
         using (var pbkdf2 = new Rfc2898DeriveBytes(password, Salt, 10000))
         {
-            byte[] hash = pbkdf2.GetBytes(32); // 32 bytes for SHA256
+            byte[] hash = pbkdf2.GetBytes(32);
             return Convert.ToBase64String(hash);
         }
     }
@@ -28,7 +28,7 @@ public class PasswordHasher : IPasswordHasher
 
         using (var pbkdf2 = new Rfc2898DeriveBytes(password, Salt, 10000))
         {
-            byte[] hash = pbkdf2.GetBytes(32); // 32 bytes for SHA256
+            byte[] hash = pbkdf2.GetBytes(32); 
 
             // Compare the hashed password with the calculated hash
             return SlowEquals(hash, hashedPasswordBytes);

@@ -1,11 +1,18 @@
-﻿using CourseManagementAPI.DTOs;
+﻿using CourseManagementAPI.Database.Models;
+using CourseManagementAPI.DTOs;
 
 namespace CourseManagementAPI.Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        Task<UserDto> AddUserAsync(UserDto userDto);
-        public UserDto GetUserByEmail(string email);
-        Task<UserDto> GetUserById(int id);
+        Task<User> AddUserAsync(UserDto userDto);
+        public User GetUserByEmail(string email);
+        Task<User> GetUserByUserName(string userName);
+        Task<IEnumerable<User>> GetAllUsers();
+        Task<IEnumerable<User>> SearchUsers(string searchTerm);
+        Task<User> GetUserById(int id);
+        Task<User> UpdateUserRole(int Id, UpdateUserRoleDto roleDto);
+        Task DeleteUser(string userName);
+        User GetCurentUser();
     }
 }

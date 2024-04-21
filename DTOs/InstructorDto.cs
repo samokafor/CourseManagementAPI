@@ -2,10 +2,11 @@
 
 namespace CourseManagementAPI.DTOs
 {
-    public class InstructorDto : CommonDto
+    public class InstructorDto
     {
         public string Name { get; set; }
-        public int Rating { get; set; }
-        public List<Course> Courses { get; set; }
+        public string Gender { get; set; }
+        public string Institution { get; set; }
+        public double Rating { get; set; }
     }
 }

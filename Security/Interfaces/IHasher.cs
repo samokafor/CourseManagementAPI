@@ -1,8 +1,8 @@
 ﻿namespace CourseManagementAPI.Security.Interfaces
 {
-    public interface IPasswordHasher
+    public interface IHasher
     {
-        string EncryptPassword(string password);
+        string EncryptPassword(string content);
         bool VerifyPassword(string password, string hashedPassword);
         bool SlowEquals(byte[] a, byte[] b);
     }

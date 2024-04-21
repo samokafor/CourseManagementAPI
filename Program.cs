@@ -22,7 +22,7 @@ builder.Services.AddDbContext<CourseDbContext>(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<IUserAuthentication, UserAuthentication> ();
-builder.Services.AddScoped<IPasswordHasher, PasswordHasher> ();
+builder.Services.AddScoped<IHasher, Hasher> ();
 builder.Services.AddScoped<IUserRepository, UserRepository> ();
 builder.Services.AddScoped<ICourseRepository, CourseRepository> ();
 builder.Services.AddScoped<IInstructorRepository, InstructorRepository> ();

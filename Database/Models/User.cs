@@ -1,5 +1,6 @@
 ﻿using CourseManagementAPI.CommonProperties;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CourseManagementAPI.Database.Models
 {
@@ -10,9 +11,9 @@ namespace CourseManagementAPI.Database.Models
         public string Gender { get; set; }
         public string Email { get; set; }
         public string Username { get; set; }
-        public string Password { get; set; }
         public string Role { get; set; }
         [ForeignKey("Email")]
+        [JsonIgnore]
         public UserLogin UserLogin { get; set; }
     }
 }

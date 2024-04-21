@@ -19,7 +19,7 @@ namespace CourseManagementAPI.Controllers
             _instructorRepository = instructorRepository;
         }
 
-        //[Authorize(Roles = "Administrator, Regular")]
+        [Authorize(Roles = "Administrator, Regular")]
         [HttpGet("{Id:int}")]
         public async Task<ActionResult<Instructor>> GetSingleInstructor(int Id)
         {
@@ -39,7 +39,7 @@ namespace CourseManagementAPI.Controllers
             }
         }
 
-        //[Authorize(Roles = "Administrator, Regular")]
+        [Authorize(Roles = "Administrator, Regular")]
         [HttpGet("Instructors")]
         public async Task<ActionResult<IEnumerable<Instructor>>> GetAllinstructorsAsync()
         {
@@ -58,7 +58,7 @@ namespace CourseManagementAPI.Controllers
             }
         }
 
-        //[Authorize(Roles = "Administrator, Regular")]
+        [Authorize(Roles = "Administrator, Regular")]
         [HttpGet("Search/{searchTerm}")]
         public async Task<ActionResult<IEnumerable<Instructor>>> SearchInstructorsAsync(string searchTerm)
         {
@@ -79,7 +79,7 @@ namespace CourseManagementAPI.Controllers
             }
         }
 
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         [HttpPost("Create")]
         public async Task<ActionResult<Instructor>> CreateInstructorAsync(InstructorDto instructorDto)
         {
@@ -103,7 +103,7 @@ namespace CourseManagementAPI.Controllers
             }
         }
 
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         [HttpPut("Edit/{Id:int}")]
         public async Task<ActionResult<Instructor>> EditInstructorAsync(int Id, InstructorDto instructorDto)
         {
@@ -126,7 +126,7 @@ namespace CourseManagementAPI.Controllers
             }
         }
 
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         [HttpDelete("Delete/{Id:int}")]
         public async Task<ActionResult> DeleteInstructorAsync(int Id)
         {

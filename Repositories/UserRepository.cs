@@ -55,9 +55,9 @@ namespace CourseManagementAPI.Repositories
             return addedUser;
         }
 
-        public async Task DeleteUser(string userName)
+        public async Task DeleteUser(int Id)
         {
-            var user = await GetUserByUserName(userName);
+            var user = await GetUserById(Id);
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
         }

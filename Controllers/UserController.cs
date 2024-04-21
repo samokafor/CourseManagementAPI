@@ -17,7 +17,7 @@ namespace CourseManagementAPI.Controllers
         {
             _userRepository = userRepository;
         }
-
+        [Authorize(Roles = "Administrator")]
         [HttpGet("{Id:int}")]
         public async Task<ActionResult<User>> GetUserById(int Id)
         {
@@ -36,7 +36,7 @@ namespace CourseManagementAPI.Controllers
 
             }
         }
-
+        [Authorize(Roles = "Administrator")]
         [HttpGet("Users")]
         public async Task<ActionResult<IEnumerable<Instructor>>> GetAllUsersAsync()
         {
@@ -54,7 +54,7 @@ namespace CourseManagementAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error fetching data from database. {ex.Message}");
             }
         }
-
+        [Authorize(Roles = "Administrator")]
         [HttpGet("Search/{searchTerm}")]
         public async Task<ActionResult<IEnumerable<Instructor>>> SearchUsersAsync(string searchTerm)
         {
@@ -75,7 +75,7 @@ namespace CourseManagementAPI.Controllers
             }
         }
 
-        
+        [Authorize(Roles = "Administrator")]
         [HttpPut("UpdateRole/{Id:int}")]
         public async Task<ActionResult<Instructor>> EditUserRoleAsync(int Id, UpdateUserRoleDto roleDto)
         {
@@ -97,6 +97,28 @@ namespace CourseManagementAPI.Controllers
 
             }
         }
-        
+
+        [Authorize(Roles = "Administrator")]
+        [HttpDelete("Delete/{Id:int}")]
+        public async Task<ActionResult> DeleteUserAsync(int Id)
+        {
+            try
+            {
+                var userToDelete = await _userRepository.GetUserById(Id);
+                if (userToDelete == null)
+                {
+                    return StatusCode(StatusCodes.Status302Found, $"Instructor with ID - {Id} does not exist");
+
+                }
+                await _userRepository.DeleteUser(Id);
+                return Ok($"{userToDelete.FirstName + " " + userToDelete.LastName} has been deleted successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error deleting user from database. {ex.Message}");
+
+            }
+        }
+
     }
 }

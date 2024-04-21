@@ -1,4 +1,4 @@
-﻿
+﻿using CourseManagementAPI.Database.Models;
 using CourseManagementAPI.DTOs;
 using CourseManagementAPI.Repositories.Interfaces;
 using CourseManagementAPI.Security.Interfaces;
@@ -36,10 +36,9 @@ namespace CourseManagementAPI.Controllers
             return Ok(token);
         }
 
-
         [AllowAnonymous]
         [HttpPost("SignUp")]
-        public async Task<ActionResult<UserDto>> SignUp([FromBody] UserDto userDto)
+        public async Task<ActionResult<User>> SignUp([FromBody] UserDto userDto)
         {
             try
             {
@@ -61,7 +60,7 @@ namespace CourseManagementAPI.Controllers
                 }
 
                 var newUser = await _userRepository.AddUserAsync(userDto);
-                return CreatedAtAction(nameof(GetUserById), new { Id = newUser.Id }, newUser);
+                return CreatedAtAction(nameof(GetUserById), new { newUser.Id }, newUser);
             }
             catch (Exception ex)
             {
@@ -69,9 +68,9 @@ namespace CourseManagementAPI.Controllers
             }
         }
 
-        [Authorize(Roles = "Administrator")]
-        [HttpGet("{Id:int}")]
-        public async Task<ActionResult<UserDto>> GetUserById(int Id)
+        //[Authorize(Roles = "Administrator")]
+        [HttpGet("User/{Id:int}")]
+        public async Task<ActionResult<User>> GetUserById(int Id)
         {
             try
             {

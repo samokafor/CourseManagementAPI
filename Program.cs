@@ -24,7 +24,10 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IUserAuthentication, UserAuthentication> ();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher> ();
 builder.Services.AddScoped<IUserRepository, UserRepository> ();
+builder.Services.AddScoped<ICourseRepository, CourseRepository> ();
+builder.Services.AddScoped<IInstructorRepository, InstructorRepository> ();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddHttpContextAccessor();
 
 
 

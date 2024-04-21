@@ -1,5 +1,6 @@
 ﻿using CourseManagementAPI.CommonProperties;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CourseManagementAPI.Database.Models
 {
@@ -11,6 +12,7 @@ namespace CourseManagementAPI.Database.Models
         public int? InstructorId { get; set; }
         public string? InstructorName { get; set; }
         [ForeignKey("InstructorId")]
+        [JsonIgnore]
         public Instructor? Instructor { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

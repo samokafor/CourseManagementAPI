@@ -1,5 +1,6 @@
 ﻿using CourseManagementAPI.Database.Models;
 using CourseManagementAPI.DTOs;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace CourseManagementAPI.Security.Interfaces
 {
@@ -11,5 +12,7 @@ namespace CourseManagementAPI.Security.Interfaces
         bool IsValidPassword(string password);
 
         string PasswordRequiremnts();
+        JwtSecurityToken ExtractToken();
+        string GenerateExpiredToken(User user);
     }
 }

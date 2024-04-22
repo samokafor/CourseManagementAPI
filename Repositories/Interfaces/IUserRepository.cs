@@ -15,5 +15,6 @@ namespace CourseManagementAPI.Repositories.Interfaces
         Task<User> UpdateUserRole(int Id, UpdateUserRoleDto roleDto);
         Task DeleteUser(int Id);
         User GetCurentUser();
+        bool CheckIfLoggedIn();
     }
 }

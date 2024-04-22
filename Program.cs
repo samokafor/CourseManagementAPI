@@ -3,6 +3,7 @@ using CourseManagementAPI.Repositories;
 using CourseManagementAPI.Repositories.Interfaces;
 using CourseManagementAPI.Security;
 using CourseManagementAPI.Security.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

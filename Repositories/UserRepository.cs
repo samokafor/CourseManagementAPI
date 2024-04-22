@@ -126,26 +126,22 @@ namespace CourseManagementAPI.Repositories
             return null;
         }
 
-        public User GetCurentUser()
+        public  User GetCurentUser()
         {
             ClaimsPrincipal user = _httpContextAccessor.HttpContext.User;
             if (user.Identity is ClaimsIdentity identity)
             {
                 var userClaims = identity.Claims;
 
-                return new User()
-                {
-                    Id = int.Parse(userClaims.FirstOrDefault(u => u.Type == "Id")?.Value),
-                    FirstName = userClaims.FirstOrDefault(u => u.Type == "FirstName")?.Value,
-                    LastName = userClaims.FirstOrDefault(u => u.Type == "LastName")?.Value,
-                    Gender = userClaims.FirstOrDefault(u => u.Type == ClaimTypes.Gender)?.Value,
-                    Username = userClaims.FirstOrDefault(u => u.Type == "Username")?.Value,
-                    Email = userClaims.FirstOrDefault(u => u.Type == ClaimTypes.Email)?.Value,
-                    Role = userClaims.FirstOrDefault(u => u.Type == ClaimTypes.Role)?.Value
-
-                };
+                return GetUserByEmail(userClaims.FirstOrDefault(u => u.Type == ClaimTypes.Email)?.Value);
+                
             }
             return null;
+        }
+        public bool CheckIfLoggedIn()
+        {
+            if (GetCurentUser() != null) return true;
+            return false;
         }
 
         public UserLogin GetUserLogin(string email)

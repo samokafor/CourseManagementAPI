@@ -13,6 +13,7 @@ namespace CourseManagementAPI.Controllers
     {
         private readonly IUserAuthentication _userAuth;
         private readonly IUserRepository _userRepository;
+
         public HomeController(IUserAuthentication userAuth, IUserRepository userRepository)
         {
             _userAuth = userAuth;
@@ -24,6 +25,10 @@ namespace CourseManagementAPI.Controllers
         [HttpPost("Login")]
         public IActionResult Login([FromBody] UserLoginDto userLogin)
         {
+            if(_userRepository.CheckIfLoggedIn() == true)
+            {
+                return BadRequest("You have to Sign Out first.");
+            }
             var user = _userAuth.Authenticate(userLogin);
 
             if (user == null)
@@ -64,6 +69,25 @@ namespace CourseManagementAPI.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Oops! an error occured! {ex.Message}");
+            }
+        }
+
+        [HttpPost("SignOut")]
+        public async Task<IActionResult> SignOut()
+        {
+            try
+            {
+                if (_userRepository.CheckIfLoggedIn() == false)
+                {
+                    return BadRequest("You are not signed in.");
+                }
+                var expiredToken = _userAuth.GenerateExpiredToken(_userRepository.GetCurentUser());
+
+                return Ok(new { token = expiredToken });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error signing out. {ex.Message}");
             }
         }
 

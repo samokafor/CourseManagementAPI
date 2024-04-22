@@ -63,7 +63,40 @@ namespace CourseManagementAPI.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var newUser = await _userRepository.AddUserAsync(userDto);
+                var newUser = await _userRepository.AddRegularUserAsync(userDto);
+                return CreatedAtAction(nameof(GetUserById), new { newUser.Id }, newUser);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Oops! an error occured! {ex.Message}");
+            }
+        }
+        
+        
+        [AllowAnonymous]
+        [HttpPost("Admin/SignUp")]
+        public async Task<ActionResult<User>> SignUpAsAdmin([FromBody] UserDto userDto)
+        {
+            try
+            {
+                if (userDto == null)
+                {
+                    return BadRequest();
+                }
+
+                var existingUser =  _userRepository.GetUserByEmail(userDto.Email);
+                if(existingUser != null)
+                {
+                    ModelState.AddModelError("Email", $"User with email - {userDto.Email} already exists!");
+                    return BadRequest(ModelState);
+                }
+                if (!_userAuth.IsValidPassword(userDto.Password))
+                {
+                    ModelState.AddModelError("Password", $"Password does not meet reqirements; {_userAuth.PasswordRequiremnts()}");
+                    return BadRequest(ModelState);
+                }
+
+                var newUser = await _userRepository.AddAdminUserAsync(userDto);
                 return CreatedAtAction(nameof(GetUserById), new { newUser.Id }, newUser);
             }
             catch (Exception ex)

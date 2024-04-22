@@ -9,7 +9,44 @@
             public string Username { get; set; }
             public string Password { get; set; }
             public string ConfirmPassword { get; set; }
-            public string Role { get; set; }
+
+        public UserDto()
+        {
+            if (FirstName == null)
+            {
+                FirstName = "";
+            }
+
+            if (LastName == null)
+            {
+                LastName = "";
+            }
+
+            if (Gender == null)
+            {
+                Gender = "";
+            }
+
+            if (Email == null)
+            {
+                Email = "";
+            }
+
+            if (Username == null)
+            {
+                Username = "";
+            }
+
+            if (Password == null)
+            {
+                Password = "";
+            }
+
+            if (ConfirmPassword == null)
+            {
+                ConfirmPassword = "";
+            }
+        }
 
     }
 }

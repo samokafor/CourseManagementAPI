@@ -1,9 +1,6 @@
 .vs/
-appsettings.json
 appsettings.Development.json
-appsettings.json
 obj/
-Migrations/
 bin/
 Jottings.cs
 DTOs/UpdatePasswordDto.cs

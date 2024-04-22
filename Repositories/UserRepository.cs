@@ -26,7 +26,7 @@ namespace CourseManagementAPI.Repositories
             _passwordHasher = passwordHasher;
             _httpContextAccessor = httpContextAccessor;
         }
-        public async Task<User> AddUserAsync(UserDto userDto)
+        public async Task<User> AddRegularUserAsync(UserDto userDto)
         {
             if (userDto == null) return null;
             if(userDto.Password != userDto.ConfirmPassword)
@@ -41,7 +41,39 @@ namespace CourseManagementAPI.Repositories
                 Gender = convert.ToTitleCase(userDto.Gender.ToLower()),
                 Email = userDto.Email.ToLower(),
                 Username = userDto.Username.ToLower(),
-                Role = convert.ToTitleCase(userDto.Role.ToLower()),
+                Role = ("Regular"),
+                
+            };
+            var newUserLogin = new UserLogin()
+            {
+                Email = newUser.Email,
+                Password = _passwordHasher.EncryptPassword(userDto.Password)
+            };
+            
+            await _context.Users.AddAsync(newUser);
+            await _context.UserLogins.AddAsync(newUserLogin);
+            await _context.SaveChangesAsync();
+            var addedUser = GetUserByEmail(userDto.Email);
+
+            return addedUser;
+        }
+        
+        public async Task<User> AddAdminUserAsync(UserDto userDto)
+        {
+            if (userDto == null) return null;
+            if(userDto.Password != userDto.ConfirmPassword)
+            {
+                throw new Exception("Passwords do not match");
+            }
+
+            var newUser = new User()
+            {
+                FirstName = convert.ToTitleCase(userDto.FirstName.ToLower()),
+                LastName = convert.ToTitleCase(userDto.LastName.ToLower()),
+                Gender = convert.ToTitleCase(userDto.Gender.ToLower()),
+                Email = userDto.Email.ToLower(),
+                Username = userDto.Username.ToLower(),
+                Role = "Administrator",
                 
             };
             var newUserLogin = new UserLogin()

@@ -1,6 +1,4 @@
-﻿using CourseManagementAPI.Database.Models;
-
-namespace CourseManagementAPI.DTOs
+﻿namespace CourseManagementAPI.DTOs
 {
     public class InstructorDto
     {
@@ -8,5 +6,21 @@ namespace CourseManagementAPI.DTOs
         public string Gender { get; set; }
         public string Institution { get; set; }
         public double Rating { get; set; }
+
+        public InstructorDto()
+            {
+                if (Name == null)
+                {
+                    Name = "";
+                }
+                if (Gender == null)
+                {
+                    Gender = "";
+                }
+                if (Institution == null)
+                {
+                    Institution = "";
+                }
+            }
     }
 }

@@ -21,7 +21,7 @@ namespace CourseManagementAPI.Repositories
         {
             if (courseDto == null) return null;
 
-            if (courseDto.InstructorId != null && (await _context.Instructors.FirstOrDefaultAsync(i => i.Id == courseDto.InstructorId)) == null) 
+            if (courseDto.InstructorId != null && (await _context.Instructors.FirstOrDefaultAsync(i => i.Id == courseDto.InstructorId)) == null)
             {
                 throw new Exception($"No instructor exists with ID - {courseDto.InstructorId}");
             }
@@ -30,7 +30,7 @@ namespace CourseManagementAPI.Repositories
             var instructor = (string.IsNullOrEmpty(courseDto.InstructorId.ToString()) || courseDto.InstructorId != null)
                 ? await _context.Instructors.FirstOrDefaultAsync(i => i.Id == courseDto.InstructorId)
                 : null;
-            
+
 
             var newCourse = new Course()
             {
@@ -41,7 +41,7 @@ namespace CourseManagementAPI.Repositories
                 InstructorName = instructor != null ? instructor.Name : "",
                 StartDate = courseDto.StartDate,
                 EndDate = courseDto.StartDate.AddDays(courseDto.CourseDuration),
-                DateCreated = DateTime.Now,  
+                DateCreated = DateTime.Now,
             };
             await _context.Courses.AddAsync(newCourse);
             await _context.SaveChangesAsync();
@@ -109,13 +109,13 @@ namespace CourseManagementAPI.Repositories
                 course.StartDate = courseDto.StartDate;
                 course.EndDate = courseDto.StartDate.AddDays(courseDto.CourseDuration);
                 course.DateModified = DateTime.Now;
-                
+
                 await _context.SaveChangesAsync();
                 return await GetSingleCourseAsync(course.Id);
             }
             return null;
 
-            
+
         }
     }
 }

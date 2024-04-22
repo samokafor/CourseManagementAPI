@@ -5,7 +5,8 @@ namespace CourseManagementAPI.Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        Task<User> AddUserAsync(UserDto userDto);
+        Task<User> AddRegularUserAsync(UserDto userDto);
+        Task<User> AddAdminUserAsync(UserDto userDto);
         public User GetUserByEmail(string email);
         public UserLogin GetUserLogin(string email);
         Task<User> GetUserByUserName(string userName);

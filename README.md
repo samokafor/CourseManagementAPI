@@ -5,7 +5,7 @@ This is a basic web application for managing courses, developed as part of a tas
 ## Features
 
 ### User Authentication
-- Users can register for an account with a username, email, and password.
+- Users can register for an account with a username, email, and password either as administrators or as regular users.
 - Registered users can log in to access the application.
 - JWT (JSON Web Tokens) are used for user authentication.
 
@@ -14,20 +14,8 @@ This is a basic web application for managing courses, developed as part of a tas
 - Two roles are defined: Administrator and Regular User.
 - Only administrators can perform administrative tasks such as adding, editing, and deleting courses.
 
-### Course Management Page
-- Users can view a list of courses with basic details like course name, description, instructor, and start date.
-- Functionality is provided for adding, editing, and deleting courses.
-
-### Course Details Page
-- Clicking on a course takes the user to a details page where they can view more information about the course.
-- All details of the selected course are displayed, including course name, description, instructor, start date, end date, etc.
-
-### Add/Edit Course Page
-- Users can add a new course or edit an existing course using a form.
-- Input fields are validated to ensure that required fields are filled, and dates are in the correct format.
-
-### Delete Course Functionality
-- Mechanism provided to delete a course from the system, typically through a button or link on the course management page.
+### Entity Post or Update Functionality
+- Mechanism provided to create, edit, and delete entities from the system, but only the admin can carry out these functions.
 
 ## Backend Implementation
 
@@ -39,9 +27,10 @@ To run the application, follow these steps:
 
 1. Clone the repository to your local machine.
 2. Navigate to the backend directory and set up the .NET Web API project.
-3. Ensure you have a compatible database (e.g., MSSQL) set up and configured.
-4. Run the application, and the backend server should start listening on the specified port.
-5. Set up the frontend React.js app if required, using the provided dummy data to support the UI.
+3. Update the connection string in the appsettings.json with your connection string.
+4. Update the database by running `dotnet ef database update`.
+5. Ensure you have a compatible database (e.g., MSSQL) set up and configured.
+6. Run the application, and the backend server should start listening on the specified port.
 
 ## Developer
 

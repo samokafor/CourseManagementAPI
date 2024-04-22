@@ -1,7 +1,4 @@
-﻿using CourseManagementAPI.Database.Models;
-using System.ComponentModel.DataAnnotations;
-
-namespace CourseManagementAPI.DTOs
+﻿namespace CourseManagementAPI.DTOs
 {
     public class InstructorDto
     {

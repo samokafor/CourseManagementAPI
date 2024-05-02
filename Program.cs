@@ -3,6 +3,7 @@ using CourseManagementAPI.Repositories;
 using CourseManagementAPI.Repositories.Interfaces;
 using CourseManagementAPI.Security;
 using CourseManagementAPI.Security.Interfaces;
+using CourseManagementAPI.Utility;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -17,8 +18,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+
 builder.Services.AddDbContext<CourseDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(new ConnectionStringUtil(builder.Configuration).GetConnectionString("DefaultConnection")));
 
 
 builder.Services.AddControllers();
